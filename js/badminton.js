@@ -1,5 +1,7 @@
-~function() {
-	var loader = new Loader();
-	var paintbrush = new Paintbrush();
-	loader.loadImages(paintbrush);
-}();
+$(document).ready(function() {
+	~ function() {
+		var loader = new Loader();
+		var paintbrush = new Paintbrush($('#canv'));
+		loader.loadImages(paintbrush, paintbrush.loadFinish);
+	}();
+});
