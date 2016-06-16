@@ -3,7 +3,7 @@ var Loader = function() {
 
 	scope.count = 0;
 	scope.base = 'img/';
-	scope.image_list = ['background.png', 'start.png'];
+	scope.image_list = ['background.jpg', 'start.png'];
 
 	scope.loadImages = function(brush_object, foo) {
 		scope.image_list.forEach(function(e, i) {
@@ -21,7 +21,7 @@ var Loader = function() {
 	}
 
 	scope.loadFinish = function(foo) {
-		Materialize.toast('finish!', 3000);
+		Materialize.toast('Load finish!', 1000);
 		foo();
 	}
 }

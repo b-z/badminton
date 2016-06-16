@@ -1,5 +1,5 @@
 canvas {
-	border: 1px solid blue;
+	border: 1px dotted black;
 	width: 100%;
 }
 .brand-logo, .page-title {
@@ -7,4 +7,8 @@ canvas {
 }
 canvas:focus {
 	outline: none;
+}
+
+body{
+	background-image: url(../img/bg.gif);
 }
