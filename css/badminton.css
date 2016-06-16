@@ -2,3 +2,7 @@ canvas {
 	border: 1px solid blue;
 	width:100%;
 }
+
+.brand-logo, .page-title {
+    font-family: inherit;
+}
