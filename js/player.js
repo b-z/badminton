@@ -6,10 +6,11 @@ var Player = function(info, pos, human_height, id, isAI) {
 	scope.info = info;
 	scope.id = id;
 	scope.isAI = isAI;
-	scope.human_height = human_height / 155 * (scope.info.net_height - scope.info.ground_edge / 2);
+	scope.human_height = human_height;// / 155 * (scope.info.net_height - scope.info.ground_edge / 2);
 
 	scope.position = pos;
-	scope.position_c = new Vector(0, 0);
+	scope.position_head = new Vector3(pos.x, pos.y+scope.human_height, pos.z);
+	scope.position_c = new Vector3(0, 0);
 
 	scope.updateCanvasCoordinate = function() {
 		// 绘制之前调用此函数
