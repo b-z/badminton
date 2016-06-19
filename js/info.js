@@ -1,5 +1,6 @@
 var Info = function() {
 	var scope = this;
+	scope.fps = 15;
 	scope.width = 1920;
 	scope.height = 1080;
 	scope.ground_edge = 2 / 15 * 1080; // 球场上方边界到屏幕底端的距离

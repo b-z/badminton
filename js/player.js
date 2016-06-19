@@ -10,13 +10,13 @@ var Player = function(info, pos, human_height, id, isAI) {
 
 	scope.position = pos;
 	scope.position_head = new Vector3(pos.x, pos.y+scope.human_height, pos.z);
-	scope.position_c = new Vector3(0, 0);
+	// scope.position_c = new Vector3(0, 0);
 
-	scope.updateCanvasCoordinate = function() {
-		// 绘制之前调用此函数
-		scope.position_c.x = scope.position.x + scope.info.width / 2;
-		scope.position_c.y = scope.info.height - scope.info.ground_edge / 2 - scope.position.y - scope.human_height;
-	}
-
-	scope.updateCanvasCoordinate();
+	// scope.updateCanvasCoordinate = function() {
+	// 	// 绘制之前调用此函数
+	// 	scope.position_c.x = scope.position.x + scope.info.width / 2;
+	// 	scope.position_c.y = scope.info.height - scope.info.ground_edge / 2 - scope.position.y - scope.human_height;
+	// }
+	//
+	// scope.updateCanvasCoordinate();
 }

@@ -94,10 +94,10 @@ var Paintbrush = function($canvas, info) {
 			scope.ctx.translate(x, y);
 			scope.ctx.rotate(-r);
 			scope.ctx.translate(-x, -y);
-			scope.ctx.moveTo(x - 20, y - 20);
-			scope.ctx.lineTo(x + 20, y + 20);
-			scope.ctx.moveTo(x - 20, y + 20);
-			scope.ctx.lineTo(x + 20, y - 20);
+			scope.ctx.moveTo(x + 20, y+ 20);
+			scope.ctx.lineTo(x , y );
+			scope.ctx.moveTo(x , y );
+			scope.ctx.lineTo(x - 20, y + 20);
 			scope.ctx.moveTo(x, y);
 			scope.ctx.lineTo(x, y + 60);
 			scope.ctx.closePath();
