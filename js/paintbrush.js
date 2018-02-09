@@ -83,7 +83,8 @@ var Paintbrush = function($canvas, info) {
 			if (player.hit_status.is_hitting) {
 				scope.ctx.strokeStyle = '#880';
 				var angle = (player.hit_range[0] + (player.hit_range[1] - player.hit_range[0]) * (player.hit_time - player.hit_status.timer) / player.hit_time) / 180 * Math.PI;
-				scope.ctx.beginPath();
+				// TODO: 使用函数计算
+				scope.ctx.beginPath();	
 				scope.ctx.moveTo(x, y_head);
 				var x_ = x + 500 * Math.cos(angle);
 				var y_ = y_head - 500 * Math.sin(angle);

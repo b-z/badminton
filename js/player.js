@@ -34,7 +34,7 @@ var Player = function(pos, human_height, id, isAI, x_speed, y_speed) {
 	// scope.is_moving = false;
 	scope.is_on_floor = true;
 
-	scope.hit_time = 0.6; // 挥拍动作持续时间
+	scope.hit_time = 0.3; // 挥拍动作持续时间
 	scope.hit_range = [135, -10]; // 挥拍角度范围(角度制)
 	scope.arm_range = [30, 200];
 	scope.hit_status = {
@@ -67,16 +67,15 @@ var Player = function(pos, human_height, id, isAI, x_speed, y_speed) {
 		var ball_angle2 = Math.atan2(by2 - my2, bx2 - mx2) * 180 / Math.PI;
 		// if (by < my) ball_angle1 = -180 - ball_angle1;
 		// if (by2 < my) ball_angle2 = -180 - ball_angle2;
-		console.log(Math.round(ball_angle1), 
-			Math.round(ball_angle2), 
-			Math.round(angle1),
-			Math.round(angle2));
+		// console.log(Math.round(ball_angle1), Math.round(ball_angle2), Math.round(angle1), Math.round(angle2));
 		if (((ball_angle1 >= angle1 && ball_angle2 <= angle2) ||
 			(ball_angle1 <= angle1 && ball_angle2 >= angle2)) &&
 			Math.abs(ball_angle1 - ball_angle2) < 270) {
-			clearInterval(TIMER);
+			// clearInterval(TIMER);
 			console.log(ball_angle1, ball_angle2, angle1, angle2);
-
+			var vx = (1000 + Math.random() * 2000)*(bx1<0?1:-1);
+			var vy = 500 + Math.random() * 1000;
+			ball.hit(ball.position.copy(), new Vector(vx, vy), CLOCK);
 		}
 	}
 

@@ -12,4 +12,7 @@ var Vector = function(x, y) {
 		scope.x -= p.x;
 		scope.y -= p.y;
 	}
+	scope.copy = function() {
+		return new Vector(scope.x, scope.y);
+	}
 }
