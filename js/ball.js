@@ -1,51 +1,97 @@
-var Ball = function(info, pos, rot) {
+var Ball = function(pos, rot) {
 	// 默认是朝上的，逆时针为正
 	// 位置对于球的原点为判定点(头部)，对于场景的原点为地面、场地中线，左负右正，下负上正
 	var scope = this;
 
-	scope.info = info;
+	scope.is_serving = true;
+
 	scope.position = pos;
 	scope.rotation = rot;
 
 	scope.speed = new Vector(0, 0);
 
+	scope.gamma = 1.9;
+	scope.beta = 0.5;
+
+	scope.stop = true;
+
 	// scope.position_c = new Vector(0, 0);
 
 	// scope.updateCanvasCoordinate = function() {
 	// 	// 绘制之前调用此函数
-	// 	scope.position_c.x = scope.position.x + scope.info.width / 2;
-	// 	scope.position_c.y = scope.info.height - scope.info.ground_edge / 2 - scope.position.y;
+	// 	scope.position_c.x = scope.position.x + info.width / 2;
+	// 	scope.position_c.y = info.height - info.ground_edge / 2 - scope.position.y;
 	// }
 	//
 	// scope.updateCanvasCoordinate();
 
-	scope.g = new Vector(0, -980);
-	scope.gamma = 2;
-	scope.beta = 0.5;
+	scope.current_hit = {
+		start: scope.position,
+		speed: scope.speed,
+		time: 0
+	}
+
+	scope.stepOver = function() {
+		if (scope.stop || scope.is_serving) return;
+		var start = scope.current_hit.start;
+		var speed = scope.current_hit.speed;
+		var time = (CLOCK - scope.current_hit.time) / info.fps;
+
+		var result = scope.move(start, speed, time);
+		scope.position.x = result[0];
+		scope.position.y = result[1];
+		scope.speed.x = result[2];
+		scope.speed.y = result[3];
+		scope.rotation = Math.atan2(-scope.speed.x, scope.speed.y);
+
+		if (scope.position.y < 0) {
+			scope.position.y = 0;
+			Materialize.toast('goal', 1000);
+			scope.stop = true;
+			return;
+		}
+	}
+
+	scope.lastPosition = function() {
+		var start = scope.current_hit.start;
+		var speed = scope.current_hit.speed;
+		var time = (CLOCK - 1 - scope.current_hit.time) / info.fps;
+		var result = scope.move(start, speed, time);
+		return [result[0], result[1]];
+	}
 
 	scope.move = function(start, speed, time) {
 		var xx = start.x;
 		var xy = start.y;
 		var vx = speed.x;
 		var vy = speed.y;
-		var c1x = vx / scope.gamma + xx - scope.g.x / (scope.gamma * scope.gamma);
-		var c1y = vy / scope.gamma + xy - scope.g.y / (scope.gamma * scope.gamma);
+		var c1x = vx / scope.gamma + xx - info.g.x / (scope.gamma * scope.gamma);
+		var c1y = vy / scope.gamma + xy - info.g.y / (scope.gamma * scope.gamma);
 		var c2x = xx - c1x;
 		var c2y = xy - c1y;
-		var xt = c1x + c2x * Math.exp(-scope.gamma * time) + scope.g.x / scope.gamma * time;
-		var yt = c1y + c2y * Math.exp(-scope.gamma * time) + scope.g.y / scope.gamma * time;
-		var vxt = -scope.gamma * c2x * Math.exp(-scope.gamma * time) + scope.g.x / scope.gamma;
-		var vyt = -scope.gamma * c2y * Math.exp(-scope.gamma * time) + scope.g.y / scope.gamma;
-		if (xt > scope.info.real_width / 2) {
+		var xt = c1x + c2x * Math.exp(-scope.gamma * time) + info.g.x / scope.gamma * time;
+		var yt = c1y + c2y * Math.exp(-scope.gamma * time) + info.g.y / scope.gamma * time;
+		var vxt = -scope.gamma * c2x * Math.exp(-scope.gamma * time) + info.g.x / scope.gamma;
+		var vyt = -scope.gamma * c2y * Math.exp(-scope.gamma * time) + info.g.y / scope.gamma;
+		if (xt > info.real_width / 2) {
 			vxt = -vxt;
-			xt = scope.info.real_width - xt;
+			xt = info.real_width - xt;
 		}
-		if (xt < -scope.info.real_width / 2) {
+		if (xt < -info.real_width / 2) {
 			vxt = -vxt;
-			xt = -scope.info.real_width - xt;
+			xt = -info.real_width - xt;
 		}
 		return [xt, yt, vxt, vyt];
 	}
+
+	scope.hit = function(start, speed, current_time) {
+		scope.current_hit.start = start;
+		scope.current_hit.speed = speed;
+		scope.current_hit.time = current_time;
+		scope.stop = false;
+		scope.is_serving = false;
+	}
+
 
 	// scope.checkHitGround = function() {
 	// 	if (scope.position.y>=0) {
@@ -93,7 +139,7 @@ var Ball = function(info, pos, rot) {
 
 
 		setTimeout(function() {
-			scope.hitDebug(start, speed, time + 1 / scope.info.fps, brush_object);
-		}, 1000 / scope.info.fps);
+			scope.hitDebug(start, speed, time + 1 / info.fps, brush_object);
+		}, 1000 / info.fps);
 	}
 }
