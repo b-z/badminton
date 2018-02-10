@@ -11,14 +11,14 @@ $(document).ready(function() {
 
 			var ball = new Ball(new Vector3(0, 0, info.real_depth / 2), 30 / 180 * Math.PI);
 			// console.log(ball);
-			info.updateBall(ball);
+			// info.updateBall(ball);
 			var player1 = new Player(new Vector3(-500, 0, info.real_depth / 2), 190, 1, false, 620, 450);
 			var player2 = new Player(new Vector3(300, 0, info.real_depth / 2), 172, 2, false, 500, 500);
 
-			paintbrush.drawBackground();
-			if (paintbrush.debug) {
-				paintbrush.drawDebug();
-			}
+			// paintbrush.drawBackground();
+			// if (paintbrush.debug) {
+			// 	paintbrush.drawDebug();
+			// }
 
 			$('#canv')[0].addEventListener('mouseup', function(e) {
 				// console.log(e);
@@ -40,6 +40,7 @@ $(document).ready(function() {
 			});
 
 			addEventListener('keydown', function(e) {
+				if (e.repeat) return;
 				switch (e.keyCode) {
 					case 38:
 						// 上
@@ -142,6 +143,7 @@ $(document).ready(function() {
 
 function startGame() {
 	if (TIMER) clearInterval(TIMER);
+	data.serving = (Math.random() > 0.5 ? '1':'2');
 	TIMER = setInterval(stepOver, 1000 / info.fps);
 }
 

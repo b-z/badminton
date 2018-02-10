@@ -1,6 +1,6 @@
 var Info = function() {
 	var scope = this;
-	scope.fps = 40;
+	scope.fps = 30;
 	scope.width = 1920;
 	scope.height = 1080;
 	scope.ground_edge = 2 / 15 * 1080; // 球场上方边界到屏幕底端的距离
@@ -30,17 +30,12 @@ var Info = function() {
 	scope.left_front_service = new Vector3(-scope.real_width/2+scope.real_service,0,0);
 	scope.right_front_service = new Vector3(scope.real_width/2-scope.real_service,0,0);
 
-
-	scope.updateBall = function(ball) {
-		scope.ball = ball;
-	}
-
 	scope.toCanvasCoord = function(pos) {
 		// 输入球的坐标(厘米)，和空间一点的坐标(厘米)，返回渲染在屏幕上的像素坐标
 		var f = scope.focus_depth;
 		var zc = scope.camera_depth;
-		var xc = scope.ball.position.x/2;
-		var yc = scope.ball.position.y/2+172;
+		var xc = data.ball.position.x/2;
+		var yc = data.ball.position.y/2 + 172;
 
 		var zp = pos.z;
 		var xp = pos.x;

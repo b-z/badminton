@@ -80,18 +80,32 @@ var Paintbrush = function($canvas, info) {
 			scope.ctx.lineTo(x, y_head);
 			scope.ctx.closePath();
 			scope.ctx.stroke();
+
+			var angle;
 			if (player.hit_status.is_hitting) {
-				scope.ctx.strokeStyle = '#880';
-				var angle = (player.hit_range[0] + (player.hit_range[1] - player.hit_range[0]) * (player.hit_time - player.hit_status.timer) / player.hit_time) / 180 * Math.PI;
-				// TODO: 使用函数计算
-				scope.ctx.beginPath();	
-				scope.ctx.moveTo(x, y_head);
-				var x_ = x + 500 * Math.cos(angle);
-				var y_ = y_head - 500 * Math.sin(angle);
-				scope.ctx.lineTo(x_, y_);
-				scope.ctx.closePath();
-				scope.ctx.stroke();
+				angle = (player.hit_range[0] + (player.hit_range[1] - player.hit_range[0]) * (player.hit_time - player.hit_status.timer) / player.hit_time) / 180 * Math.PI;
+			} else {
+				angle = player.hit_range[0] / 180 * Math.PI;
 			}
+
+			var p1 = player.position_head.copy();
+			var p2 = player.position_head.copy();
+			var q1 = new Vector3(player.arm_range[0] * Math.cos(angle), player.arm_range[0] * Math.sin(angle), 0);
+			var q2 = new Vector3(player.arm_range[1] * Math.cos(angle), player.arm_range[1] * Math.sin(angle), 0);
+			p1.add(q1);
+			p2.add(q2);
+			var r1 = scope.info.toCanvasCoord(p1);
+			var r2 = scope.info.toCanvasCoord(p2);
+			scope.ctx.strokeStyle = '#880';
+
+			scope.ctx.beginPath();	
+			scope.ctx.moveTo(r1[0], r1[1]);
+			scope.ctx.lineTo(r2[0], r2[1]);
+			// console.log(p1, p2);
+			scope.ctx.closePath();
+			scope.ctx.stroke();
+
+
 			scope.ctx.restore();
 		}
 	}

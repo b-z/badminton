@@ -6,6 +6,9 @@ var Ball = function(pos, rot) {
 	scope.is_serving = true;
 
 	scope.position = pos;
+	scope.last_position = pos.copy();
+	scope.last_position_valid = false;
+
 	scope.rotation = rot;
 
 	scope.speed = new Vector(0, 0);
@@ -33,6 +36,8 @@ var Ball = function(pos, rot) {
 
 	scope.stepOver = function() {
 		if (scope.stop || scope.is_serving) return;
+		scope.last_position = scope.position.copy();
+
 		var start = scope.current_hit.start;
 		var speed = scope.current_hit.speed;
 		var time = (CLOCK - scope.current_hit.time) / info.fps;
@@ -44,20 +49,23 @@ var Ball = function(pos, rot) {
 		scope.speed.y = result[3];
 		scope.rotation = Math.atan2(-scope.speed.x, scope.speed.y);
 
+		if (scope.last_position_valid) {
+			if (scope.position.x * scope.last_position.x <= 0) {
+				if (scope.position.y <= info.real_net) {
+					scope.position.x = 0;
+					scope.stop = true;
+					return;
+				}
+			}
+		}
+		scope.last_position_valid = true;
+
 		if (scope.position.y < 0) {
 			scope.position.y = 0;
-			Materialize.toast('goal', 1000);
+			// Materialize.toast('goal', 1000);
 			scope.stop = true;
 			return;
 		}
-	}
-
-	scope.lastPosition = function() {
-		var start = scope.current_hit.start;
-		var speed = scope.current_hit.speed;
-		var time = (CLOCK - 1 - scope.current_hit.time) / info.fps;
-		var result = scope.move(start, speed, time);
-		return [result[0], result[1]];
 	}
 
 	scope.move = function(start, speed, time) {
@@ -88,6 +96,7 @@ var Ball = function(pos, rot) {
 		scope.current_hit.start = start;
 		scope.current_hit.speed = speed;
 		scope.current_hit.time = current_time;
+		scope.last_position_valid = false;
 		scope.stop = false;
 		scope.is_serving = false;
 	}
